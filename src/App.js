@@ -7,6 +7,8 @@ import NewsSection from "./components/NewsSection";
 class App extends Component {
   state = {
     newsArticles: {},
+    fetchedArticles: {},
+    previousSearchedValue: "",
   };
 
   async getNewsIDs() {
@@ -20,12 +22,13 @@ class App extends Component {
 
     const articles = this.state.newsArticles;
 
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < 5; index++) {
       const newsData = await this.getNewsFromIDs(data[index]);
       articles[newsData.id] = newsData;
     }
 
     this.setState({ newsArticles: articles });
+    this.setState({ fetchedArticles: articles });
   }
 
   async getNewsFromIDs(id) {
@@ -41,7 +44,28 @@ class App extends Component {
   }
 
   handleSearch = (event) => {
-    console.log(event.target.value);
+    const searchedValue = event.target.value.trim();
+    const articles = Object.values(this.state.fetchedArticles);
+
+    if (searchedValue === this.state.previousSearchedValue) {
+      return;
+    }
+
+    this.setState({ previousSearchedValue: searchedValue });
+
+    if (!searchedValue) {
+      this.setState({ newsArticles: articles });
+    }
+
+    const searchedArticles = articles.reduce((acc, article) => {
+      if (article.title.toLowerCase().includes(searchedValue.toLowerCase())) {
+        article.highlightedText = searchedValue;
+        acc[article.id] = article;
+      }
+      return acc;
+    }, {});
+
+    this.setState({ newsArticles: searchedArticles });
   };
 
   componentDidMount() {

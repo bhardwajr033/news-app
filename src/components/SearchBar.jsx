@@ -8,7 +8,7 @@ class SearchBar extends Component {
       border: "none",
       padding: "1rem",
       marginTop: "1rem",
-      marginLeft : "10%",
+      marginLeft: "10%",
       borderRadius: "10px",
     };
     return (
@@ -16,7 +16,7 @@ class SearchBar extends Component {
         style={BarStyle}
         key="search-bar"
         placeholder={"search news"}
-        //onKeyDown={this.props.handleSearch}
+        onKeyUp={this.props.handleSearch}
       />
     );
   }

@@ -22,6 +22,11 @@
   gap: 0.5rem;
 }
 
+.news-title span {
+  background-color: aqua;
+  margin: 0;
+}
+
 .news-url {
   font-size: 0.75rem;
   color: darkturquoise;

@@ -12,12 +12,12 @@ class FilterBar extends Component {
         />
         <FilterCategory
           handleSelect={this.props.handleSelect}
-          categoryName="sort by"
-          filterValues={["Popularity", "Date", "Comments"]}
+          categoryName="Sort by"
+          filterValues={["Popularity", "Comments"]}
         />
         <FilterCategory
           handleSelect={this.props.handleSelect}
-          categoryName="for"
+          categoryName="news of"
           filterValues={["All time", "last 24Hrs", "last week", "last month"]}
         />
       </div>

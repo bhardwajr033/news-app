@@ -12,7 +12,7 @@ class NewsSection extends Component {
       return;
     }
 
-    const news = Object.values(newsArticles);
+    const news = newsArticles;
     const newsBoxes = Array.from({ length: news.length }, (_, index) => {
       return <NewsBox key={index} newsData={news[index]} />;
     });

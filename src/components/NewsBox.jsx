@@ -35,7 +35,7 @@ class NewsBox extends Component {
           <p className="author">{newsData.by}</p>
           <p className="timePassed">{newsData.newsdate}</p>
           <p className="comments">
-            {newsData.kids ? newsData.kids.length : 0} comments
+            {newsData.comments} {newsData.comments > 1 ? "comments" : "comment"}
           </p>
         </div>
       </div>

@@ -6,10 +6,10 @@ import NewsSection from "./components/NewsSection";
 
 class App extends Component {
   state = {
-    newsArticles: {},
-    fetchedArticles: {},
+    newsArticles: [],
+    fetchedArticles: [],
     previousSearchedValue: "",
-    searchType : "Title"
+    searchType: "Title",
   };
 
   async getNewsIDs() {
@@ -21,15 +21,21 @@ class App extends Component {
     }
     const data = await response.json();
 
-    const articles = this.state.newsArticles;
+    const articles = [];
 
     for (let index = 0; index < 5; index++) {
       const newsData = await this.getNewsFromIDs(data[index]);
-      articles[newsData.id] = newsData;
+      articles.push(newsData);
     }
 
-    this.setState({ newsArticles: articles });
-    this.setState({ fetchedArticles: articles });
+    function sortByPosition(array) {
+      return array.sort((news1, news2) => news2["score"] - news1["score"]);
+    }
+
+    const sortedarticles = sortByPosition(articles);
+
+    this.setState({ newsArticles: sortedarticles });
+    this.setState({ fetchedArticles: sortedarticles });
   }
 
   async getNewsFromIDs(id) {
@@ -42,13 +48,14 @@ class App extends Component {
     const data = await response.json();
 
     data.newsdate = data.time ? new Date(data.time).toDateString() : null;
+    data.comments = data.kids ? data.kids.length : 0;
 
     return data;
   }
 
   handleSearch = (event) => {
     const searchedValue = event.target.value.trim();
-    const articles = Object.values(this.state.fetchedArticles);
+    const articles = this.state.fetchedArticles;
 
     if (searchedValue === this.state.previousSearchedValue) {
       return;
@@ -58,14 +65,14 @@ class App extends Component {
 
     if (!searchedValue || searchedValue === "") {
       this.setState({ newsArticles: articles });
-      return
+      return;
     }
 
     let searchingType = "title";
 
     const searchType = this.state.searchType;
 
-    switch(searchType){
+    switch (searchType) {
       case "Title":
         searchingType = "title";
         break;
@@ -79,26 +86,57 @@ class App extends Component {
         searchingType = "title";
     }
 
-
     const searchedArticles = articles.reduce((acc, article) => {
-      if (article[searchingType].toLowerCase().includes(searchedValue.toLowerCase())) {
+      if (
+        article[searchingType]
+          .toLowerCase()
+          .includes(searchedValue.toLowerCase())
+      ) {
         // article.highlightedText = searchedValue;
-        acc[article.id] = article;
+        acc.push(article);
       }
       return acc;
-    }, {});
+    }, []);
 
     this.setState({ newsArticles: searchedArticles });
   };
 
   handleSelect = (event) => {
     const selectType = event.target.getAttribute("data-selecttype");
-    switch(selectType){
+    switch (selectType) {
       case "Search by":
-        this.setState({searchType : event.target.value});
+        this.setState({ searchType: event.target.value });
         break;
+      case "Sort by":
+        this.sortArticles(event.target.value);
+        break;
+      default:
     }
   };
+
+  sortArticles(sortType) {
+    const articles = this.state.newsArticles;
+
+    let sortKey = "score";
+    switch (sortType) {
+      case "Popularity":
+        sortKey = "score";
+        break;
+      case "Comments":
+        sortKey = "comments";
+        break;
+      default:
+        sortKey = "score";
+    }
+
+    function sortByPosition(array) {
+      return array.sort((news1, news2) => news2[sortKey] - news1[sortKey]);
+    }
+
+    const sortedArticles = sortByPosition(articles);
+
+    this.setState({ newsArticles: sortedArticles });
+  }
 
   componentDidMount() {
     this.getNewsIDs();

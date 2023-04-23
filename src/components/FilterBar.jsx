@@ -18,7 +18,7 @@ class FilterBar extends Component {
         <FilterCategory
           handleSelect={this.props.handleSelect}
           categoryName="news of"
-          filterValues={["All time", "last 24Hrs", "last week", "last month"]}
+          filterValues={["all", "last 24 hrs", "last week", "last month"]}
         />
       </div>
     );

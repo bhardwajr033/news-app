@@ -31,7 +31,7 @@ class NewsBox extends Component {
           </a>
         </div>
         <div className="second-line">
-          <p className="points">{newsData.score} points</p>
+          <p className="points">{newsData.score} {newsData.score > 1 ? "points" : "point"}</p>
           <p className="author">{newsData.by}</p>
           <p className="timePassed">{newsData.newsdate}</p>
           <p className="comments">

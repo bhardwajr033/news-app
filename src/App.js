@@ -22,19 +22,26 @@ class App extends Component {
 
     const articles = [];
 
-    for (let index = 0; index < 5; index++) {
-      const newsData = await this.getNewsFromIDs(data[index]);
-      articles.push(newsData);
+    let index = 0;
+    const numnerOfAtriclesToFetch = 100;
+    let noOfFetchedArticles = 0;
+
+    for (index = 0; index < numnerOfAtriclesToFetch; index++) {
+      this.getNewsFromIDs(data[index]).then((newsData) => {
+        articles.push(newsData);
+        noOfFetchedArticles += 1;
+        if (noOfFetchedArticles === numnerOfAtriclesToFetch) {
+          const sortedarticles = sortByScore(articles);
+
+          this.setState({ newsArticles: sortedarticles });
+          this.setState({ fetchedArticles: sortedarticles });
+        }
+      });
     }
 
-    function sortByPosition(array) {
+    function sortByScore(array) {
       return array.sort((news1, news2) => news2["score"] - news1["score"]);
     }
-
-    const sortedarticles = sortByPosition(articles);
-
-    this.setState({ newsArticles: sortedarticles });
-    this.setState({ fetchedArticles: sortedarticles });
   }
 
   async getNewsFromIDs(id) {
@@ -171,7 +178,6 @@ class App extends Component {
         break;
       default:
     }
-    
   }
 
   componentDidMount() {

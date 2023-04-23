@@ -6,16 +6,19 @@ class FilterBar extends Component {
     return (
       <div style={{ flexDirection: "row", marginLeft: "10%" }}>
         <FilterCategory
-          categoryName="Search"
-          filterValues={["All", "Stories", "Comments"]}
+          handleSelect={this.props.handleSelect}
+          categoryName="Search by"
+          filterValues={["Title", "Author", "Date"]}
         />
         <FilterCategory
-          categoryName="by"
-          filterValues={["Popularity", "Date"]}
+          handleSelect={this.props.handleSelect}
+          categoryName="sort by"
+          filterValues={["Popularity", "Date", "Comments"]}
         />
         <FilterCategory
+          handleSelect={this.props.handleSelect}
           categoryName="for"
-          filterValues={["All time", "last 24H", "last week", "last month"]}
+          filterValues={["All time", "last 24Hrs", "last week", "last month"]}
         />
       </div>
     );

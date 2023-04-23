@@ -8,22 +8,19 @@ class NewsBox extends Component {
       return;
     }
 
-    const newsdate = new Date(newsData.time).toDateString();
-
-    const highlightedText = newsData.highlightedText;
-
     let newsTitle = newsData.title;
 
-    if (highlightedText) {
-      const index = newsTitle.indexOf(highlightedText);
-      newsTitle = newsTitle = (
-        <p>
-          {newsTitle.slice(0, index)}
-          <span>{highlightedText}</span>
-          {newsTitle.slice(index + highlightedText.length, newsTitle.length)}
-        </p>
-      );
-    }
+    // const highlightedText = newsData.highlightedText;
+    // if (highlightedText) {
+    //   const index = newsTitle.indexOf(highlightedText);
+    //   newsTitle = (
+    //     <p>
+    //       {newsTitle.slice(0, index)}
+    //       <span>{highlightedText}</span>
+    //       {newsTitle.slice(index + highlightedText.length, newsTitle.length)}
+    //     </p>
+    //   );
+    // }
 
     return (
       <div className="news-box">
@@ -36,7 +33,7 @@ class NewsBox extends Component {
         <div className="second-line">
           <p className="points">{newsData.score} points</p>
           <p className="author">{newsData.by}</p>
-          <p className="timePassed">{newsdate}</p>
+          <p className="timePassed">{newsData.newsdate}</p>
           <p className="comments">
             {newsData.kids ? newsData.kids.length : 0} comments
           </p>

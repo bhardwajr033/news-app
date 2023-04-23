@@ -22,7 +22,13 @@ class FilterCategory extends Component {
     return (
       <React.Fragment>
         <label style={{ marginLeft: "0.5rem" }}>{categoryName}</label>
-        <select style={selectStyle}>{filterOptions}</select>
+        <select
+          data-selecttype={categoryName}
+          onChange={this.props.handleSelect}
+          style={selectStyle}
+        >
+          {filterOptions}
+        </select>
       </React.Fragment>
     );
   }

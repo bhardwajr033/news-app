@@ -9,6 +9,7 @@ class App extends Component {
     newsArticles: {},
     fetchedArticles: {},
     previousSearchedValue: "",
+    searchType : "Title"
   };
 
   async getNewsIDs() {
@@ -40,6 +41,8 @@ class App extends Component {
     }
     const data = await response.json();
 
+    data.newsdate = data.time ? new Date(data.time).toDateString() : null;
+
     return data;
   }
 
@@ -53,13 +56,33 @@ class App extends Component {
 
     this.setState({ previousSearchedValue: searchedValue });
 
-    if (!searchedValue) {
+    if (!searchedValue || searchedValue === "") {
       this.setState({ newsArticles: articles });
+      return
     }
 
+    let searchingType = "title";
+
+    const searchType = this.state.searchType;
+
+    switch(searchType){
+      case "Title":
+        searchingType = "title";
+        break;
+      case "Author":
+        searchingType = "by";
+        break;
+      case "Date":
+        searchingType = "newsdate";
+        break;
+      default:
+        searchingType = "title";
+    }
+
+
     const searchedArticles = articles.reduce((acc, article) => {
-      if (article.title.toLowerCase().includes(searchedValue.toLowerCase())) {
-        article.highlightedText = searchedValue;
+      if (article[searchingType].toLowerCase().includes(searchedValue.toLowerCase())) {
+        // article.highlightedText = searchedValue;
         acc[article.id] = article;
       }
       return acc;
@@ -68,9 +91,19 @@ class App extends Component {
     this.setState({ newsArticles: searchedArticles });
   };
 
+  handleSelect = (event) => {
+    const selectType = event.target.getAttribute("data-selecttype");
+    switch(selectType){
+      case "Search by":
+        this.setState({searchType : event.target.value});
+        break;
+    }
+  };
+
   componentDidMount() {
     this.getNewsIDs();
   }
+
   render() {
     const sectionStyle = {
       display: "flex",
@@ -80,7 +113,7 @@ class App extends Component {
     return (
       <section style={sectionStyle}>
         <SearchBar handleSearch={this.handleSearch} />
-        <FilterBar />
+        <FilterBar handleSelect={this.handleSelect} />
         <NewsSection newsArticles={this.state.newsArticles} />
       </section>
     );

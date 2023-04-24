@@ -71,10 +71,10 @@ class App extends Component {
     const searchedValue = event.target.value.trim();
     const articles = this.state.fetchedArticles;
 
-    // if (!searchedValue || searchedValue === "") {
-    //   this.setState({ newsArticles: articles });
-    //   return;
-    // }
+    if (!searchedValue || searchedValue === "") {
+      this.setState({ newsArticles: articles });
+      return;
+    }
 
     let searchingType = "title";
 

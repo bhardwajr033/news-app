@@ -2,6 +2,12 @@
   margin: 0.2rem;
 }
 
+.content-loading{
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 1rem;
+}
+
 .news-section {
   width: 80%;
   margin-left: 10%;

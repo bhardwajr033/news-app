@@ -9,6 +9,7 @@ class App extends Component {
     newsArticles: [],
     fetchedArticles: [],
     searchType: "Title",
+    isContentLoaded :false,
   };
 
   async getNewsIDs() {
@@ -27,6 +28,7 @@ class App extends Component {
     let noOfFetchedArticles = 0;
 
     for (index = 0; index < numnerOfAtriclesToFetch; index++) {
+      // eslint-disable-next-line
       this.getNewsFromIDs(data[index]).then((newsData) => {
         articles.push(newsData);
         noOfFetchedArticles += 1;
@@ -35,6 +37,7 @@ class App extends Component {
 
           this.setState({ newsArticles: sortedarticles });
           this.setState({ fetchedArticles: sortedarticles });
+          this.setState({isContentLoaded : true});
         }
       });
     }
@@ -59,6 +62,7 @@ class App extends Component {
     data.comments = data.kids ? data.kids.length : 0;
     data.score = data.score ? data.score : 0;
     data.date = data.time ? new Date(data.time * 1000) : new Date(0);
+    // data.highlightedText = null;
 
     return data;
   }
@@ -67,10 +71,10 @@ class App extends Component {
     const searchedValue = event.target.value.trim();
     const articles = this.state.fetchedArticles;
 
-    if (!searchedValue || searchedValue === "") {
-      this.setState({ newsArticles: articles });
-      return;
-    }
+    // if (!searchedValue || searchedValue === "") {
+    //   this.setState({ newsArticles: articles });
+    //   return;
+    // }
 
     let searchingType = "title";
 
@@ -131,6 +135,9 @@ class App extends Component {
         break;
       case "Comments":
         sortKey = "comments";
+        break;
+      case "Date":
+        sortKey = "date";
         break;
       default:
         sortKey = "score";
@@ -194,7 +201,7 @@ class App extends Component {
       <section style={sectionStyle}>
         <SearchBar handleSearch={this.handleSearch} />
         <FilterBar handleSelect={this.handleSelect} />
-        <NewsSection newsArticles={this.state.newsArticles} />
+        <NewsSection newsArticles={this.state.newsArticles} isContentLoaded={this.state.isContentLoaded}/>
       </section>
     );
   }

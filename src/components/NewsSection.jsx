@@ -8,8 +8,10 @@ class NewsSection extends Component {
   render() {
     const { newsArticles } = this.props;
 
-    if (!newsArticles) {
-      return;
+    if (newsArticles.length === 0) {
+      return (
+        <div className="content-loading">{this.props.isContentLoaded ? "No Search Found" : "Content loading ..."}</div>
+      );
     }
 
     const news = newsArticles;

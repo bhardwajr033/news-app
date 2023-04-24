@@ -13,7 +13,7 @@ class FilterBar extends Component {
         <FilterCategory
           handleSelect={this.props.handleSelect}
           categoryName="Sort by"
-          filterValues={["Popularity", "Comments"]}
+          filterValues={["Popularity", "Comments" , "Date"]}
         />
         <FilterCategory
           handleSelect={this.props.handleSelect}

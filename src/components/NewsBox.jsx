@@ -12,7 +12,7 @@ class NewsBox extends Component {
 
     // const highlightedText = newsData.highlightedText;
     // if (highlightedText) {
-    //   const index = newsTitle.indexOf(highlightedText);
+    //   const index = newsTitle.toLowerCase.indexOf(highlightedText);
     //   newsTitle = (
     //     <p>
     //       {newsTitle.slice(0, index)}
